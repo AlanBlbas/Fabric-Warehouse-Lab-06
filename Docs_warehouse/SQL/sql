@@ -1,0 +1,85 @@
+
+
+-- 01_create_dimproduct.sql
+
+
+CREATE TABLE dbo.DimProduct (
+ProductKey INTEGER NOT NULL,
+ProductAltKey VARCHAR(25) NULL,
+ProductName VARCHAR(50) NOT NULL,
+Category VARCHAR(50) NULL,
+ListPrice DECIMAL(5,2) NULL
+);
+GO
+
+-- 02_insert_dimproduct.sql
+
+INSERT INTO dbo.DimProduct
+VALUES
+(1, 'RING1', 'Bicycle bell', 'Accessories', 5.99),
+(2, 'BRITE1', 'Front light', 'Accessories', 15.49),
+(3, 'BRITE2', 'Rear light', 'Accessories', 15.49);
+GO
+
+-- 03_create_dw_schema.sql
+-- Load the core schema that you can find it in Raw_Data folder.
+
+
+
+-- 04_queries_aggregations.sql
+-- Write a grouped query for SalesRevenue by CalendarYear and MonthName using the date dimension to get clean calendar fields reviewers understand on sight.
+
+SELECT
+d.[Year] AS CalendarYear,
+d.[Month] AS MonthOfYear,
+d.MonthName AS MonthName,
+SUM(so.SalesTotal) AS SalesRevenue
+FROM FactSalesOrder AS so
+JOIN DimDate AS d
+ON so.SalesOrderDateKey = d.DateKey
+GROUP BY d.[Year], d.[Month], d.MonthName
+ORDER BY CalendarYear, MonthOfYear;
+
+--  05_create_view_vSalesByRegion.sql
+-- Extend the same query by joining the customer dimension and grouping by CountryRegion, which is a typical “how much by region and period” question reviewers expect.
+
+SELECT
+d.[Year] AS CalendarYear,
+d.[Month] AS MonthOfYear,
+d.MonthName AS MonthName,
+c.CountryRegion AS SalesRegion,
+SUM(so.SalesTotal) AS SalesRevenue
+FROM FactSalesOrder AS so
+JOIN DimDate AS d
+ON so.SalesOrderDateKey = d.DateKey
+JOIN DimCustomer AS c
+ON so.CustomerKey = c.CustomerKey
+GROUP BY d.[Year], d.[Month], d.MonthName, c.CountryRegion
+ORDER BY CalendarYear, MonthOfYear, SalesRegion;
+
+-- Step 7 — Create a reusable view
+-- Wrap the joined aggregation in a view so downstream users can select from a consistent definition without copying SQL between files; remove ORDER BY inside the view per normal database rules.
+
+CREATE VIEW vSalesByRegion AS
+SELECT
+d.[Year] AS CalendarYear,
+d.[Month] AS MonthOfYear,
+d.MonthName AS MonthName,
+c.CountryRegion AS SalesRegion,
+SUM(so.SalesTotal) AS SalesRevenue
+FROM FactSalesOrder AS so
+JOIN DimDate AS d
+ON so.SalesOrderDateKey = d.DateKey
+JOIN DimCustomer AS c
+ON so.CustomerKey = c.CustomerKey
+GROUP BY d.[Year], d.[Month], d.MonthName, c.CountryRegion;
+
+-- Validate the view with a separate SELECT that applies ordering for readability in result grids.
+
+SELECT
+CalendarYear,
+MonthName,
+SalesRegion,
+SalesRevenue
+FROM vSalesByRegion
+ORDER BY CalendarYear, MonthOfYear, SalesRegion;

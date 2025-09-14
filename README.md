@@ -1,6 +1,6 @@
 # 🏗️ Microsoft Fabric Data Warehouse 
 
-![hero](/images/warehouse-hero.gif) [web:221]
+![hero](/Image_warehouse/fabrik_warehouse_gif.gif) [web:221]
 
 ## Introduction 
 I built a working Microsoft Fabric data warehouse by following the core flow of Lab 06 and documenting every step so reviewers can reproduce the warehouse, run the queries, and verify results quickly in Fabric Studio.  
@@ -41,6 +41,16 @@ This portfolio focuses on the core warehouse build for Lab 06, but the Fabric le
 My next iteration will branch this repo to add monitoring notes using the companion lab and a small security note on access direction so the portfolio covers both analytics and operational awareness.  
 
 
+This layout keeps scripts, proof, and notes in predictable places so a reviewer can follow the work without hunting for files  
+
+## How to reproduce in Fabric
+
+Open a Fabric workspace with capacity, create a Warehouse, then paste the SQL files from /sql in order while following the step notes in /docs to match the screenshots and outputs.  
+Use Visual query to repeat the merge, expand, and filter for ProductName, then preview or export the result if you want a quick table for a slide or a handoff.  
+
+## Learn sources
+- Analyze data in a data warehouse, Microsoft Learn Lab 06.  
+- Implement a data warehouse with Microsoft Fabric, learning path modules for loading, querying, monitoring, and securing.  
 
 
 
