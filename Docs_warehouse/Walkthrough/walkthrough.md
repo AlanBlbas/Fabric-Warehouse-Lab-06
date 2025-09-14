@@ -9,10 +9,6 @@ This walkthrough shows exactly how the warehouse was built in Microsoft Fabric, 
 - Open a Fabric workspace with Trial, Premium, or Fabric capacity and a new Warehouse item, then follow each step below in order, running the matching SQL files from your [SQL folder](../SQL/).  
 
 
-Suggested image names:
-- workspace-created.png, warehouse-provisioned.png, dimproduct-created.png, tables-after-load.png, query-year-month.png, query-year-month-region.png, view-created.png, visual-query-merge.png, visual-query-expand-productname.png, visual-query-filter-cable-lock.png, semantic-model.png[attached_file:1].  
-
----
 
 ## 1) Create a workspace
 
@@ -83,7 +79,7 @@ Suggested image names:
 - Expand the new merged column to keep ProductName, then filter the ProductName column to “Cable Lock” to show a quick product slice stakeholders often ask for without writing SQL  
 - Use Visualize results or Download Excel to hand off a quick result; this step mirrors how non‑technical users explore a targeted question in a demo or review  
 
-Paste three screenshots:
+
 - Merge configuration  
 ![Merge on ProductKey](/Image_warehouse/visual-query-merge.png)
 - Expand ProductName  
